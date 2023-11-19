@@ -22,7 +22,15 @@ signal.signal(signal.SIGTERM, signal_handler)
 in_memory_datastore = {
     "Create F5 pool with 2 members": "      f5networks.f5_modules.bigip_pool:\\\\n        name: \"{{ pool_name }}\"\\\\n        partition: Common\\\\n        lb_method: \"{{ lb_method }}\"\\\\n        slow_ramp_time: \"{{ slow_ramp_time }}\"\\\\n        monitor_type: and_list\\\\n        monitors:\\\\n          - \"{{ mon }}\"\\\\n        state: present\\\\n      delegate_to: localhost" ,
     "Create F5 VIP": "      f5networks.f5_modules.bigip_virtual_server:\\\\n        name: \\\"{{ vip_name }}\\\"\\\\n        destination: \\\"{{ vip_ip }}\\\"\\\\n        port: \\\"{{ vip_port }}\\\"\\\\n        pool: \\\"{{ pool_name }}\\\"\\\\n        snat: Automap\\\\n        description: \\\"{{ vs_description }}\\\"\\\\n        all_profiles:\\\\n          - \\\"{{ profile1 }}\\\"\\\\n          - \\\"{{ profile2 }}\\\"\\\\n        state: present\\\\n      delegate_to: localhost" ,
-    "Reboot F5": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost"
+    "Reboot F5": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
+    "Create a Cisco ACI VLAN": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
+    "Login to DB2": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
+    "Create an OpenShift namespace": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
+    "Create something": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
+    "Restart an nginx server": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
+    "Clear a SAP queue": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
+    "Restart a Websphere instance": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
+
 }
 
 class S(BaseHTTPRequestHandler):

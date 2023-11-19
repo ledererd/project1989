@@ -68,21 +68,21 @@ def dump_status():
                 f.write("| Calculating remediation action... <img src=\"images/spinner.gif\" width=\"14\" height=\"14\">\n")
             if problem["state"] == "english":
                 f.write("| Detected issue with " + problem["name"] + "\n")
-                f.write("| Calculated remediation action: " + problem["request"] + "\n")
+                f.write("| Suggestion: " + problem["request"] + "\n")
             if problem["state"] == "lightspeed":
                 f.write("| Detected issue with " + problem["name"] + "\n")
-                f.write("| Calculated remediation action: " + problem["request"] + "\n")
+                f.write("| Suggestion: " + problem["request"] + "\n")
                 f.write("| Calculating YAML... <img src=\"images/spinner.gif\" width=\"14\" height=\"14\">\n")
             if problem["state"] == "lightspeedreturned":
                 f.write("| Detected issue with " + problem["name"] + "\n")
-                f.write("| Calculated remediation action: " + problem["request"] + "\n")
+                f.write("| Suggestion: " + problem["request"] + "\n")
                 #f.write("| Calculating YAML... done!\n")
                 yaml = problem["yaml"]
                 f.write("| YAML: <pre>" + yaml.replace("\\n", "\n") + "</pre>\n")
                 f.write("| Applying fix... <img src=\"images/spinner.gif\" width=\"14\" height=\"14\">\n")
             if problem["state"] == "fixed":
                 f.write("| Detected issue with " + problem["name"] + "\n")
-                f.write("| Calculated remediation action: " + problem["request"] + "\n")
+                f.write("| Suggestion: " + problem["request"] + "\n")
                 #f.write("| Calculating YAML... done!\n")
                 yaml = problem["yaml"]
                 f.write("| YAML: <pre>" + yaml.replace("\\n", "\n") + "</pre>\n")
