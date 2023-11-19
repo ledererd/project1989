@@ -12,7 +12,7 @@ while read TIME TYPE STATUS THISPOD DESC; do
                 continue
         fi
 
-	echo "$TIME $TYPE $STATUS $THISPOD $DESC"
+	#echo "$TIME $TYPE $STATUS $THISPOD $DESC"
 
 	POD=$( echo "$THISPOD" | sed 's^pod/^^g' )
 
