@@ -12,24 +12,24 @@ while read TIME TYPE STATUS THISPOD DESC; do
                 continue
         fi
 
-	#echo "$TIME $TYPE $STATUS $THISPOD $DESC"
+	echo "$TIME $TYPE $STATUS $THISPOD $DESC"
 
 	POD=$( echo "$THISPOD" | sed 's^pod/^^g' )
 
-	[ "${POD}" == "bigip" ]     && DESC = "Create F5 VIP"
-	[ "${POD}" == "cisco-aci" ] && DESC = "Create a Cisco ACI VLAN"
-	[ "${POD}" == "ibm-db2" ]   && DESC = "Login to DB2"
-	[ "${POD}" == "openshift" ] && DESC = "Create an OpenShift namespace"
-	[ "${POD}" == "cloud-lb" ]  && DESC = "Create something"
-	[ "${POD}" == "nginx" ]     && DESC = "Restart an nginx server"
-	[ "${POD}" == "sap-hana" ]  && DESC = "Clear a SAP queue"
-	[ "${POD}" == "websphere" ] && DESC = "Restart a Websphere instance"
+	[ "${POD}" == "bigip" ]     && REQUEST="Create F5 VIP"
+	[ "${POD}" == "cisco-aci" ] && REQUEST="Create a Cisco ACI VLAN"
+	[ "${POD}" == "ibm-db2" ]   && REQUEST="Login to DB2"
+	[ "${POD}" == "openshift" ] && REQUEST="Create an OpenShift namespace"
+	[ "${POD}" == "cloud-lb" ]  && REQUEST="Create something"
+	[ "${POD}" == "nginx" ]     && REQUEST="Restart an nginx server"
+	[ "${POD}" == "sap-hana" ]  && REQUEST="Clear a SAP queue"
+	[ "${POD}" == "websphere" ] && REQUEST="Restart a Websphere instance"
 
 	curl -H "Accept: application/json, text/plain, /" \
             -H "Content-Type: application/json" \
 	    -X POST \
 	    -s \
-	    -d "{\"request\": \"${DESC}\", \"deployment\": \"${POD}\"}" \
+	    -d "{\"request\": \"${REQUEST}\", \"deployment\": \"${POD}\"}" \
 	    http://eda-engine:8080/ &
 
 done
