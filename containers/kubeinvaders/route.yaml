@@ -1,0 +1,10 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: kubeinvaders
+spec:
+  #host: "kubeinvaders.io"
+  to:
+    name: kubeinvaders
+  tls:
+    termination: Edge

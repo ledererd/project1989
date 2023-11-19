@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"mock-eda:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"mock-eda\")].image"}]'
+  name: mock-eda
+  labels:
+    app: mock-eda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mock-eda
+  template:
+    metadata:
+      name: mock-eda
+      labels:
+        app: mock-eda
+    spec:
+      containers:
+        - name: mock-eda
+          image: quay.io/dlederer/project1989-mock-eda:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mock-eda
+  labels:
+    app: mock-eda
+spec:
+  selector:
+    app: mock-eda
+  type: ClusterIP
+  ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  labels:
+    app: mock-eda
+  name: mock-eda
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: mock-eda
+    weight: 100
+

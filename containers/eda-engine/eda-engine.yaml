@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"eda-engine:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"eda-engine\")].image"}]'
+  name: eda-engine
+  labels:
+    app: eda-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eda-engine
+  template:
+    metadata:
+      name: eda-engine
+      labels:
+        app: eda-engine
+    spec:
+      containers:
+        - name: eda-engine
+          image: quay.io/dlederer/project1989-eda-engine:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+          volumeMounts:
+          - name: eda-engine-config
+            mountPath: /config
+      volumes:
+      - name: eda-engine-config
+        configMap:
+          name: eda-engine-config
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eda-engine
+  labels:
+    app: eda-engine
+spec:
+  selector:
+    app: eda-engine
+  type: ClusterIP
+  ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  labels:
+    app: eda-engine
+  name: eda-engine
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: eda-engine
+    weight: 100
+  tls:
+    termination: Edge
+
+

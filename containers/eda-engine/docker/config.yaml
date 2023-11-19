@@ -1,0 +1,3 @@
+OUTPUT_FILE: /tmp/yamlstream.txt
+LIGHTSPEED_URL: http://mock-lightspeed:8080/api/v0/ai/completions/
+RECOVERY_URL: http://recovery-engine:8080/recover

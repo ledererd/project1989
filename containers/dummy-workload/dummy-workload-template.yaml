@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"recovery-engine:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"recovery-engine\")].image"}]'
+  name: recovery-engine
+  labels:
+    app: recovery-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recovery-engine
+  template:
+    metadata:
+      name: recovery-engine
+      labels:
+        app: recovery-engine
+    spec:
+      containers:
+        - name: recovery-engine
+          image: image-registry.openshift-image-registry.svc:5000/recovery-engine/recovery-engine:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recovery-engine
+  labels:
+    app: recovery-engine
+spec:
+  selector:
+    app: recovery-engine
+  type: ClusterIP
+  ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  labels:
+    app: recovery-engine
+  name: recovery-engine
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: recovery-engine
+    weight: 100
+

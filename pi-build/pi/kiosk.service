@@ -1,0 +1,16 @@
+[Unit]
+Description=Chromium Kiosk
+Wants=graphical.target
+After=graphical.target
+
+[Service]
+Environment=DISPLAY=:0.0
+Environment=XAUTHORITY=/home/damo/.Xauthority
+Type=simple
+ExecStart=/bin/bash /home/damo/kiosk.sh
+Restart=on-abort
+User=damo
+Group=damo
+
+[Install]
+WantedBy=graphical.target

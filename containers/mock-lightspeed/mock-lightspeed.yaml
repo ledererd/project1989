@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"project1989-mock-lightspeed:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"project1989-mock-lightspeed\")].image"}]'
+  name: mock-lightspeed
+  labels:
+    app: mock-lightspeed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mock-lightspeed
+  template:
+    metadata:
+      name: mock-lightspeed
+      labels:
+        app: mock-lightspeed
+    spec:
+      containers:
+        - name: mock-lightspeed
+          image: quay.io/dlederer/project1989-mock-lightspeed:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mock-lightspeed
+  labels:
+    app: mock-lightspeed
+spec:
+  selector:
+    app: mock-lightspeed
+  type: ClusterIP
+  ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  labels:
+    app: mock-lightspeed
+  name: mock-lightspeed
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: mock-lightspeed
+    weight: 100
+
