@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "kubeinvaders.fullname" . }}
+  labels:
+    app.kubernetes.io/name: kubeinvaders
+    helm.sh/chart: {{ include "kubeinvaders.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    {{- with .Values.additionalLabels }}
+    {{- . | toYaml | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+      name: http
+      {{ if (and (eq .Values.service.type "NodePort") (not (empty .Values.service.nodePort))) }}
+      nodePort: {{.Values.service.nodePort}}
+      {{ end }}
+  selector:
+    app.kubernetes.io/name: kubeinvaders
+    app.kubernetes.io/instance: {{ .Release.Name }}

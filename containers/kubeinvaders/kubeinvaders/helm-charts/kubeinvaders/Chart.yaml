@@ -1,0 +1,12 @@
+apiVersion: v1
+description: A Helm chart for KubeInvaders
+name: kubeinvaders
+appVersion: 1.9.5
+version: 1.9.5
+home: https://github.com/lucky-sideburn/KubeInvaders
+image: https://github.com/lucky-sideburn/KubeInvaders/blob/master/kubeinvaders.svg
+sources:
+- https://github.com/lucky-sideburn/KubeInvaders
+maintainers:
+- name: lucky-sideburn
+  email: luckysideburn@gmail.com

@@ -1,0 +1,4 @@
+Thank you for installing KubeInvaders!
+{{- if .Values.ingress.enabled }}
+Visit https://{{ .Values.ingress.hostName }}
+{{- end }}

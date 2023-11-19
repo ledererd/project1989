@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>KubeInvaders</title>
+    <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./bootstrap-5.0.0-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body id="kinvBody">
+
+      <!-- START GAME MODE SCREEN -->
+      <div id="game-screen" style="display: block; height: 100%; width: 50%; float: left;">
+        <div class="row" style="margin-top: 0%;">
+          <canvas id="myCanvas" width="720" height="768" style="position: absolute; top: 0; left: 0; width: 50%; height: 100%"></canvas>
+        </div>
+      </div>
+      <!-- END GAME MODE SCREEN -->
+
+    <div class="container transition" id="logContainer" style="width: 48%; height: 100%; margin-left: 0px; margin-right: 0px; visibility: visible; padding: 10px; opacity: 1; float: right;">
+      <div class="row" style="margin-top: 2%;">
+        <div class="col text-center" style="width: 100%; height: 100%">
+          Lightspeed Infrastructure AI Assistant
+        </div>
+        <div id="logging" style="width: 100%; font-size: 12px;">
+          Waiting Instructions...
+	      </div>
+      </div>
+    </div>
+
+    <script src="./utils.js"></script>
+    <script src="./kubeinvaders.js"></script>
+    <script src="./bootstrap-5.0.0-dist/js/bootstrap.min.js"></script>
+    <script src="./js/jquery-3.6.0.min.js"></script>
+    <script src="./js/popper.min.js"></script>
+  </body>
+</html>
+
