@@ -17,6 +17,8 @@ while read TIME TYPE STATUS THISPOD DESC; do
 	POD=$( echo "$THISPOD" | sed 's^pod/^^g' )
 
 	[ "${POD}" == "bigip" ]     && REQUEST="Create F5 VIP"
+	[ "${POD}" == "bigip" ]     && REQUEST="Flush F5 DNS cache"
+	[ "${POD}" == "bigip" ]     && REQUEST="Reboot F5"
 	[ "${POD}" == "cisco-aci" ] && REQUEST="Create a Cisco ACI VLAN"
 	[ "${POD}" == "cisco-aci" ] && REQUEST="Create a Cisco ACI tenant"
 	[ "${POD}" == "cisco-aci" ] && REQUEST="Create Cisco ACI link level policies"
@@ -24,11 +26,11 @@ while read TIME TYPE STATUS THISPOD DESC; do
 	[ "${POD}" == "openshift" ] && REQUEST="Create an OpenShift namespace"
 	[ "${POD}" == "openshift" ] && REQUEST="Scale an OpenShift deployment"
 	[ "${POD}" == "openshift" ] && REQUEST="Roll-back an OpenShift deployment"
-	[ "${POD}" == "cloud-lb" ]  && REQUEST="Create something"
 	[ "${POD}" == "nginx" ]     && REQUEST="Restart an nginx server"
+	[ "${POD}" == "nginx" ]     && REQUEST="Update nginx TLS config"
 	[ "${POD}" == "sap-hana" ]  && REQUEST="Clear a SAP queue"
-	[ "${POD}" == "sap-hana" ]  && REQUEST="Perform a SAP HANA database backup"
-	[ "${POD}" == "sap-hana" ]  && REQUEST="Deploy an SAP transport request"
+	[ "${POD}" == "sap-hana" ]  && REQUEST="Backup SAP HANA"
+	[ "${POD}" == "sap-hana" ]  && REQUEST="Create RHEL server on Azure for SAP HANA replica"
 	[ "${POD}" == "websphere" ] && REQUEST="Restart a Websphere instance"
 
 	curl -H "Accept: application/json, text/plain, /" \
