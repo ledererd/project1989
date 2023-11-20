@@ -12,7 +12,7 @@ oc adm policy add-role-to-user admin system:serviceaccount:project1989:default
 ( cd mock-eda && oc create -f mock-eda.yaml )
 ( cd eda-engine && oc create -f eda-engine.yaml && oc create configmap eda-engine-config --from-file ./config.yaml)
 ( cd eda-engine/docker && oc create configmap eda-engine-config --from-file ./config.yaml )
-( cd dummy-workload && oc create -f eda-engine.yaml )
+( cd dummy-workload && ./create-all-workloads.sh )
 
 cd kubeinvaders
 
