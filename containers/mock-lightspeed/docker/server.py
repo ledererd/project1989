@@ -25,12 +25,16 @@ in_memory_datastore = {
     "Reboot F5": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
     "Create a Cisco ACI VLAN": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
     "Login to DB2": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
-    "Create an OpenShift namespace": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
+    "Create an OpenShift namespace": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost", 
     "Create something": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
     "Restart an nginx server": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
     "Clear a SAP queue": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
     "Restart a Websphere instance": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost",
-
+    "Create a Cisco ACI tenant": "cisco.aci.aci_tenant:\\\\n  description: Tenant configured by Ansible\\\\n  host: '{{ ansible_host }}'\\\\n  password: '{{ _password_ }}'\\\\n  state: present\\\\n  tenant: CiscoLive-Demo\\\\n  username: '{{ _username_ }}'\\\\n  validate_certs: false",
+    "Create Cisco ACI link level policies": "cisco.aci.aci_rest:\\\\n  content:\\\\n    fabricHIfPol:\\\\n      attributes:\\\\n        name: '{{ item.name }}'\\\\n        speed: '{{ item.speed }}'\\\\n        status: '{{ item.status }}'\\\\n  host: '{{ ansible_host }}'\\\\n  method: post\\\\n  password: '{{ password }}'\\\\n  path: /api/node/mo/uni/infra/hintfpol-{{ item.name }}.json\\\\n  username: '{{ _username_ }}'\\\\n  validate_certs: false\\\\nloop:\\\\n- format: json\\\\n  name: Link Level Policy\\\\n  speed: 100\\\\n  status: active\\\\n- format: json\\\\n  name: HintfPolicy\\\\n  speed: 10\\\\n  status: active\\\\n- format: json\\\\n  name: CDP Policy\\\\n  speed: 20\\\\n  status: active\\\\n- format: json\\\\n  name: MAC Address (MAC Address Type)\\\\n  speed: 128\\\\n  status: active\\\\n- name: Tunnelivity Policy",
+    "Scale an OpenShift deployment": "openshift_scale:\\\\n  name: my-app\\\\n  namespace: my-namespace\\\\n  replicas: 5\\\\n  state: present",
+    "Roll-back an OpenShift deployment": "openshift_deploy:\\\\n  latest: '{{ rollback_version }}'\\\\n  name: my-app\\\\n  namespace: my-namespace\\\\n  state: latest",
+    "Deploy an SAP transport request": "community.general.sap_transport:\\\\n  transport_files:\\\\n  - K900123.COR\\\\n  transport_path: /usr/sap/trans/transport"
 }
 
 class S(BaseHTTPRequestHandler):

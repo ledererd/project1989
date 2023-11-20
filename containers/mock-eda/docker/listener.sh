@@ -18,11 +18,17 @@ while read TIME TYPE STATUS THISPOD DESC; do
 
 	[ "${POD}" == "bigip" ]     && REQUEST="Create F5 VIP"
 	[ "${POD}" == "cisco-aci" ] && REQUEST="Create a Cisco ACI VLAN"
+	[ "${POD}" == "cisco-aci" ] && REQUEST="Create a Cisco ACI tenant"
+	[ "${POD}" == "cisco-aci" ] && REQUEST="Create Cisco ACI link level policies"
 	[ "${POD}" == "ibm-db2" ]   && REQUEST="Login to DB2"
 	[ "${POD}" == "openshift" ] && REQUEST="Create an OpenShift namespace"
+	[ "${POD}" == "openshift" ] && REQUEST="Scale an OpenShift deployment"
+	[ "${POD}" == "openshift" ] && REQUEST="Roll-back an OpenShift deployment"
 	[ "${POD}" == "cloud-lb" ]  && REQUEST="Create something"
 	[ "${POD}" == "nginx" ]     && REQUEST="Restart an nginx server"
 	[ "${POD}" == "sap-hana" ]  && REQUEST="Clear a SAP queue"
+	[ "${POD}" == "sap-hana" ]  && REQUEST="Perform a SAP HANA database backup"
+	[ "${POD}" == "sap-hana" ]  && REQUEST="Deploy an SAP transport request"
 	[ "${POD}" == "websphere" ] && REQUEST="Restart a Websphere instance"
 
 	curl -H "Accept: application/json, text/plain, /" \
