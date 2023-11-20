@@ -876,6 +876,7 @@ function drawRocket() {
         rocketX = spaceshipX + (spaceshipWidth / 2);
         rocketY = spaceshipY;
         rocketLaunched = true
+        shoot_audio.play();
     }
 }
 
@@ -900,7 +901,6 @@ window.setInterval(function draw() {
     drawSpaceship();
     
     if (shot && !collisionDetected) {
-        shoot_audio.play();
         drawRocket();
     }
 
