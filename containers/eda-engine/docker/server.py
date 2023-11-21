@@ -185,7 +185,7 @@ async def process_request(data):
     # Call Lightspeed to retrieve the AAP YAML to run
     LIGHTSPEED_URL = config["LIGHTSPEED_URL"]
     lightspeed_data = { "prompt": req}
-    response = requests.post(url=LIGHTSPEED_URL, json=lightspeed_data, timeout=5)
+    response = requests.post(url=LIGHTSPEED_URL, json=lightspeed_data, timeout=15)
     jsonresp = response.content.decode('utf-8')
     #jsonresp = response.content
     logging.info("Raw response from lightspeed: %s", jsonresp)
@@ -210,7 +210,7 @@ async def process_request(data):
     logging.info("Recovering Deployment: %s", deployment)
     RECOVERY_URL = config["RECOVERY_URL"]
     recovery_data = { "recover": deployment }
-    response = requests.post(url=RECOVERY_URL, json=recovery_data, timeout=5)
+    response = requests.post(url=RECOVERY_URL, json=recovery_data, timeout=15)
 
     problem["state"] = "fixed"
     dump_status()
