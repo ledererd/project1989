@@ -17,7 +17,8 @@ oc adm policy add-role-to-user admin system:serviceaccount:project1989:default
 cd kubeinvaders
 
 oc project project1989
-oc adm policy add-scc-to-user anyuid -z project1989
+# Needed to get the kubeinvaders container running as root (I know, I know...)
+oc adm policy add-scc-to-user anyuid -z default
 
 # Need to create the route
 oc create -f route.yaml
