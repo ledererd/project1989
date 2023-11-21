@@ -36,7 +36,8 @@ in_memory_datastore = {
     "Backup SAP HANA": "ansible.builtin.script: /usr/share/sap/hana/backup/sap_hana_backup.sh",
     "Update nginx TLS config": "ansible.builtin.template:\\\\n  dest: /etc/nginx/conf.d/tls.conf\\\\n  src: templates/tls.conf.j2",
     "Flush F5 DNS cache": "f5networks.f5_modules.bigip_command:\\\\n  commands: tmsh flush ltm dns cache",
-    "Create RHEL server on Azure for SAP HANA replica":"azure.azcollection.azure_rm_virtualmachine:\\\\n  admin_password: '{{ _admin_password_ }}'\\\\n  admin_username: '{{ _admin_username_ }}'\\\\n  image:\\\\n    offer: '{{ offer }}'\\\\n    publisher: '{{ publisher }}'\\\\n    sku: '{{ sku }}'\\\\n    version: latest\\\\n  name: '{{ _name_ }}'\\\\n  open_ports:\\\\n  - 22\\\\n  - 80\\\\n  os_type: Linux\\\\n  resource_group: '{{ _resource_group_ }}'\\\\n  subnet_name: '{{ _subnet_name_ }}'\\\\n  virtual_network_name: '{{ _virtual_network_name_ }}'\\\\n  vm_size: Standard_A0"
+    "Create RHEL server on Azure for SAP HANA replica":"azure.azcollection.azure_rm_virtualmachine:\\\\n  admin_password: '{{ _admin_password_ }}'\\\\n  admin_username: '{{ _admin_username_ }}'\\\\n  image:\\\\n    offer: '{{ offer }}'\\\\n    publisher: '{{ publisher }}'\\\\n    sku: '{{ sku }}'\\\\n    version: latest\\\\n  name: '{{ _name_ }}'\\\\n  open_ports:\\\\n  - 22\\\\n  - 80\\\\n  os_type: Linux\\\\n  resource_group: '{{ _resource_group_ }}'\\\\n  subnet_name: '{{ _subnet_name_ }}'\\\\n  virtual_network_name: '{{ _virtual_network_name_ }}'\\\\n  vm_size: Standard_A0",
+    "Do something": "      f5networks.f5_modules.bigip_command:\\\\n        commands: tmsh reboot\\\\n      delegate_to: localhost"
 }
 
 class S(BaseHTTPRequestHandler):

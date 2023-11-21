@@ -16,6 +16,9 @@ while read TIME TYPE STATUS THISPOD DESC; do
 
 	POD=$( echo "$THISPOD" | sed 's^pod/^^g' )
 
+	# Create a default
+	REQUEST="Do something"
+
 	if [ "${POD}" == "bigip" ]; then
 		DIEROLL=$(( ( RANDOM % 3 ) ))
 	   	[ $DIEROLL -eq 0 ] && REQUEST="Create F5 VIP"
