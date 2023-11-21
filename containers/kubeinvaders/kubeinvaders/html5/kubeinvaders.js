@@ -1200,7 +1200,9 @@ getSavedPresets();
 
 // Calculate the right-side pane
 var lightspeed_secure = "lightspeed_endpoint_placeholder";
-var lightspeed_url = "wss://" + lightspeed_secure + "/ws/log";
+//var lightspeed_url = "wss://" + lightspeed_secure + "/ws/log";
+//var ws_log = new WebSocket(lightspeed_url, { rejectUnauthorized: false });
+var lightspeed_url = "ws://" + lightspeed_secure + "/ws/log";
 var ws_log = new WebSocket(lightspeed_url);
 
 ws_log.onmessage = function(event) {

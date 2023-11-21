@@ -36,6 +36,8 @@ spec:
       - env:
         - name: ENDPOINT
           value: kubeinvaders_endpoint_placeholder
+        - name: INSECURE_ENDPOINT
+          value: "true"
         - name: NAMESPACE
           value: target
         - name: ALIENPROXIMITY

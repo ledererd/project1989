@@ -6,5 +6,3 @@ spec:
   #host: "kubeinvaders.io"
   to:
     name: kubeinvaders
-  tls:
-    termination: Edge

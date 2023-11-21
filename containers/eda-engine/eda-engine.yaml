@@ -67,7 +67,5 @@ spec:
     kind: Service
     name: eda-engine
     weight: 100
-  tls:
-    termination: Edge
 
 
