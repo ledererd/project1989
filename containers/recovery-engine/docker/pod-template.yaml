@@ -8,9 +8,6 @@ objects:
 - apiVersion: v1
   kind: Pod
   metadata:
-    annotations:
-      openshift.io/scc: restricted-v2
-      seccomp.security.alpha.kubernetes.io/pod: runtime/default
     labels:
       app: ${WORKLOAD_NAME}
     name: ${WORKLOAD_NAME}
@@ -26,58 +23,14 @@ objects:
       resources:
         requests:
           cpu: 100m
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-          - ALL
-        runAsNonRoot: true
-        runAsUser: 1000670000
       terminationMessagePath: /dev/termination-log
       terminationMessagePolicy: File
-      volumeMounts:
-      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-        name: kube-api-access-gfj24
-        readOnly: true
     dnsPolicy: ClusterFirst
     enableServiceLinks: true
     preemptionPolicy: PreemptLowerPriority
     priority: 0
     restartPolicy: Always
-    schedulerName: default-scheduler
-    securityContext:
-      fsGroup: 1000670000
-      seLinuxOptions:
-        level: s0:c26,c10
-      seccompProfile:
-        type: RuntimeDefault
-    serviceAccount: default
-    serviceAccountName: default
     terminationGracePeriodSeconds: 30
-    volumes:
-    - name: kube-api-access-gfj24
-      projected:
-        defaultMode: 420
-        sources:
-        - serviceAccountToken:
-            expirationSeconds: 3607
-            path: token
-        - configMap:
-            items:
-            - key: ca.crt
-              path: ca.crt
-            name: kube-root-ca.crt
-        - downwardAPI:
-            items:
-            - fieldRef:
-                apiVersion: v1
-                fieldPath: metadata.namespace
-              path: namespace
-        - configMap:
-            items:
-            - key: service-ca.crt
-              path: service-ca.crt
-            name: openshift-service-ca.crt
 parameters:
 - description: Workload name
   name: WORKLOAD_NAME
