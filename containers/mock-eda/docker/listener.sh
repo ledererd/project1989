@@ -16,22 +16,37 @@ while read TIME TYPE STATUS THISPOD DESC; do
 
 	POD=$( echo "$THISPOD" | sed 's^pod/^^g' )
 
-	[ "${POD}" == "bigip" ]     && REQUEST="Create F5 VIP"
-	[ "${POD}" == "bigip" ]     && REQUEST="Flush F5 DNS cache"
-	[ "${POD}" == "bigip" ]     && REQUEST="Reboot F5"
-	[ "${POD}" == "cisco-aci" ] && REQUEST="Create a Cisco ACI VLAN"
-	[ "${POD}" == "cisco-aci" ] && REQUEST="Create a Cisco ACI tenant"
-	[ "${POD}" == "cisco-aci" ] && REQUEST="Create Cisco ACI link level policies"
-	[ "${POD}" == "ibm-db2" ]   && REQUEST="Login to DB2"
-	[ "${POD}" == "openshift" ] && REQUEST="Create an OpenShift namespace"
-	[ "${POD}" == "openshift" ] && REQUEST="Scale an OpenShift deployment"
-	[ "${POD}" == "openshift" ] && REQUEST="Roll-back an OpenShift deployment"
-	[ "${POD}" == "nginx" ]     && REQUEST="Restart an nginx server"
-	[ "${POD}" == "nginx" ]     && REQUEST="Update nginx TLS config"
-	[ "${POD}" == "sap-hana" ]  && REQUEST="Clear a SAP queue"
-	[ "${POD}" == "sap-hana" ]  && REQUEST="Backup SAP HANA"
-	[ "${POD}" == "sap-hana" ]  && REQUEST="Create RHEL server on Azure for SAP HANA replica"
+	if [ "${POD}" == "bigip" ]; then
+		DIEROLL=$(( ( RANDOM % 3 ) ))
+	   	[ $DIEROLL -eq 0 ] && REQUEST="Create F5 VIP"
+		[ $DIEROLL -eq 1 ] && REQUEST="Flush F5 DNS cache"
+		[ $DIEROLL -eq 2 ] && REQUEST="Reboot F5"
+	fi
+	if [ "${POD}" == "cisco-aci" ]; then
+	       DIEROLL=$(( ( RANDOM % 3 ) ))
+       	       [ $DIEROLL -eq 0 ] && REQUEST="Create a Cisco ACI VLAN"
+               [ $DIEROLL -eq 1 ] && REQUEST="Create a Cisco ACI tenant"
+               [ $DIEROLL -eq 2 ] && REQUEST="Create Cisco ACI link level policies"
+	fi
+	if [ "${POD}" == "openshift" ]; then
+               DIEROLL=$(( ( RANDOM % 3 ) ))
+       	       [ $DIEROLL -eq 0 ] && REQUEST="Create an OpenShift namespace"
+	       [ $DIEROLL -eq 1 ] && REQUEST="Scale an OpenShift deployment"
+	       [ $DIEROLL -eq 2 ] && REQUEST="Roll-back an OpenShift deployment"
+	fi
+	if [ "${POD}" == "nginx" ]; then
+               DIEROLL=$(( ( RANDOM % 2 ) ))
+               [ $DIEROLL -eq 0 ] && REQUEST="Restart an nginx server"
+	       [ $DIEROLL -eq 1 ] && REQUEST="Update nginx TLS config"
+	fi
+	if [ "${POD}" == "sap-hana" ]; then
+	       DIEROLL=$(( ( RANDOM % 3 ) ))
+       	       [ $DIEROLL -eq 0 ] && REQUEST="Clear a SAP queue"
+	       [ $DIEROLL -eq 1 ] && REQUEST="Backup SAP HANA"
+	       [ $DIEROLL -eq 2 ] && REQUEST="Create RHEL server on Azure for SAP HANA replica"
+	fi
 	[ "${POD}" == "websphere" ] && REQUEST="Restart a Websphere instance"
+	[ "${POD}" == "ibm-db2" ]   && REQUEST="Login to DB2"
 
 	curl -H "Accept: application/json, text/plain, /" \
             -H "Content-Type: application/json" \
