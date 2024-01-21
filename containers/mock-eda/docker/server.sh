@@ -2,6 +2,6 @@
 
 /tmp/oc project target
 
-/tmp/oc get events -w | /listener.sh
+/tmp/oc get events -w -n target | /listener.sh
 
 

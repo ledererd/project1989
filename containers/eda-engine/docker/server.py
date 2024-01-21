@@ -65,27 +65,30 @@ def dump_status():
             f.write("\n")
             if problem["state"] == "initial":
                 f.write("| Detected issue with " + problem["name"] + "\n")
-                f.write("| Calculating remediation action... <img src=\"images/spinner.gif\" width=\"14\" height=\"14\">\n")
+#                f.write("| Calculating remediation action... <img src=\"images/spinner.gif\" width=\"14\" height=\"14\">\n")
+                f.write("| Calculating remediation action... \n")
             if problem["state"] == "english":
                 f.write("| Detected issue with " + problem["name"] + "\n")
                 f.write("| Suggestion: " + problem["request"] + "\n")
             if problem["state"] == "lightspeed":
                 f.write("| Detected issue with " + problem["name"] + "\n")
                 f.write("| Suggestion: " + problem["request"] + "\n")
-                f.write("| Calculating YAML... <img src=\"images/spinner.gif\" width=\"14\" height=\"14\">\n")
+#                f.write("| Calculating YAML... <img src=\"images/spinner.gif\" width=\"14\" height=\"14\">\n")
+                f.write("| Calculating YAML... \n")
             if problem["state"] == "lightspeedreturned":
                 f.write("| Detected issue with " + problem["name"] + "\n")
                 f.write("| Suggestion: " + problem["request"] + "\n")
                 #f.write("| Calculating YAML... done!\n")
                 yaml = problem["yaml"]
-                f.write("| YAML: <pre>" + yaml.replace("\\n", "\n") + "</pre>\n")
-                f.write("| Applying fix... <img src=\"images/spinner.gif\" width=\"14\" height=\"14\">\n")
+                f.write("| YAML: \n" + yaml.replace("\\n", "\n") + "\n")
+#                f.write("| Applying fix... <img src=\"images/spinner.gif\" width=\"14\" height=\"14\">\n")
+                f.write("| Applying fix... \n")
             if problem["state"] == "fixed":
                 f.write("| Detected issue with " + problem["name"] + "\n")
                 f.write("| Suggestion: " + problem["request"] + "\n")
                 #f.write("| Calculating YAML... done!\n")
                 yaml = problem["yaml"]
-                f.write("| YAML: <pre>" + yaml.replace("\\n", "\n") + "</pre>\n")
+                f.write("| YAML: \n" + yaml.replace("\\n", "\n") + "\n")
                 f.write("| Problem fixed\n")
         if len(problems) == 0:
             f.write("Waiting Instructions...\n")
@@ -114,7 +117,8 @@ async def log_reader(n=5) -> list:
             elif line.startswith(" "):   # This is for the pre-formatted YAML content.  Don't put a <br> on the end because it's already wrapped in a <pre>
                 log_lines.append(f"{line}")
             else:
-                log_lines.append(f"{line}<br/>")
+                #log_lines.append(f"{line}\n")
+                log_lines.append(f"{line}")
         return log_lines
 
 
