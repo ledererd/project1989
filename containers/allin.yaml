@@ -1,0 +1,273 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"project1989-mock-lightspeed:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"project1989-mock-lightspeed\")].image"}]'
+  name: mock-lightspeed
+  labels:
+    app: mock-lightspeed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mock-lightspeed
+  template:
+    metadata:
+      name: mock-lightspeed
+      labels:
+        app: mock-lightspeed
+    spec:
+      containers:
+        - name: mock-lightspeed
+          image: quay.io/dlederer/project1989-mock-lightspeed:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mock-lightspeed
+  labels:
+    app: mock-lightspeed
+spec:
+  selector:
+    app: mock-lightspeed
+  type: ClusterIP
+  ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  labels:
+    app: mock-lightspeed
+  name: mock-lightspeed
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: mock-lightspeed
+    weight: 100
+
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"recovery-engine:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"recovery-engine\")].image"}]'
+  name: recovery-engine
+  labels:
+    app: recovery-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recovery-engine
+  template:
+    metadata:
+      name: recovery-engine
+      labels:
+        app: recovery-engine
+    spec:
+      containers:
+        - name: recovery-engine
+          image: quay.io/dlederer/project1989-recovery-engine:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: recovery-engine
+  labels:
+    app: recovery-engine
+spec:
+  selector:
+    app: recovery-engine
+  type: ClusterIP
+  ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  labels:
+    app: recovery-engine
+  name: recovery-engine
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: recovery-engine
+    weight: 100
+
+
+---
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"mock-eda:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"mock-eda\")].image"}]'
+  name: mock-eda
+  labels:
+    app: mock-eda
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mock-eda
+  template:
+    metadata:
+      name: mock-eda
+      labels:
+        app: mock-eda
+    spec:
+      containers:
+        - name: mock-eda
+          image: quay.io/dlederer/project1989-mock-eda:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mock-eda
+  labels:
+    app: mock-eda
+spec:
+  selector:
+    app: mock-eda
+  type: ClusterIP
+  ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  labels:
+    app: mock-eda
+  name: mock-eda
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: mock-eda
+    weight: 100
+
+
+---
+
+
+apiVersion: v1
+data:
+  config.yaml: |
+    OUTPUT_FILE: /tmp/yamlstream.txt
+    LIGHTSPEED_URL: http://mock-lightspeed:8080/api/v0/ai/completions/
+    RECOVERY_URL: http://recovery-engine:8080/recover
+kind: ConfigMap
+metadata:
+  name: eda-engine-config
+
+
+---
+
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"eda-engine:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"eda-engine\")].image"}]'
+  name: eda-engine
+  labels:
+    app: eda-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eda-engine
+  template:
+    metadata:
+      name: eda-engine
+      labels:
+        app: eda-engine
+    spec:
+      containers:
+        - name: eda-engine
+          image: quay.io/dlederer/project1989-eda-engine:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+          volumeMounts:
+          - name: eda-engine-config
+            mountPath: /config
+      volumes:
+      - name: eda-engine-config
+        configMap:
+          name: eda-engine-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eda-engine
+  labels:
+    app: eda-engine
+spec:
+  selector:
+    app: eda-engine
+  type: ClusterIP
+  ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  labels:
+    app: eda-engine
+  name: eda-engine
+spec:
+  port:
+    targetPort: 8080-tcp
+  to:
+    kind: Service
+    name: eda-engine
+    weight: 100
+
+

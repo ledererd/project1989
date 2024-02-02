@@ -135,6 +135,17 @@ async def get(request: Request):
         "data" : req_info
     }
 
+@app.get("/log")
+async def get(request: Request):
+
+    #req_info = await request.json()
+
+    #resp = await process_request(req_info)
+
+    with open(config["OUTPUT_FILE"]) as f:
+        data = f.read()
+
+    return {"data": data }
 
 @app.websocket("/ws/log")
 async def websocket_endpoint_log(websocket: WebSocket) -> None:
@@ -147,7 +158,7 @@ async def websocket_endpoint_log(websocket: WebSocket) -> None:
 
     try:
         while True:
-            await asyncio.sleep(1)
+            #await asyncio.sleep(1)
             logs = await log_reader(30)
             await websocket.send_text(logs)
     except Exception as e:

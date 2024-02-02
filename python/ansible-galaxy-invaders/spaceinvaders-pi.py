@@ -65,12 +65,15 @@ RED = (237, 28, 36)
 
 #SCREEN = display.set_mode((800, 600))
 # We're aiming for a resolution of 1920 x 1080
-XRES=1920
-YRES=1080
+#XRES=1920
+#YRES=1080
+XRES=1280
+YRES=720
 
 # The gamebox is the left half of the screen, but create a bit of a border
 GAMEBOX=(XRES/2) - 5
-COMPRESSION=100   # Compress the game a bit in the Y axis
+#COMPRESSION=100   # Compress the game a bit in the Y axis
+COMPRESSION=0   # Compress the game a bit in the Y axis
 
 # The lightspeed box is the right half of the screen, and create a bit of a border
 LIGHTSPEEDBOX=XRES/2 + 15
@@ -88,8 +91,10 @@ IMAGES = {name: image.load(IMAGE_PATH + '{}.png'.format(name)).convert_alpha()
 
 #BLOCKERS_POSITION = 450
 BLOCKERS_POSITION = YRES - 150 - COMPRESSION
-BLOCKERS_SEPARATION = 200
-BLOCKERS_SIZE = 9
+#BLOCKERS_SEPARATION = 200
+BLOCKERS_SEPARATION = 150
+#BLOCKERS_SIZE = 9
+BLOCKERS_SIZE = 7
 
 ENEMY_DEFAULT_POSITION = 100 + COMPRESSION  # Initial value for a new game
 ENEMY_MOVE_DOWN = 35
@@ -98,6 +103,7 @@ DUALBULLETMODE = False
 #LIGHTSPEEDTEXT = ''
 
 
+#######################################################################
 class Ship(sprite.Sprite):
     def __init__(self):
         sprite.Sprite.__init__(self)
@@ -519,10 +525,11 @@ class SpaceInvaders(object):
         self.life3 = Life((GAMEBOX)-31, 3+COMPRESSION)
         self.livesGroup = sprite.Group(self.life1, self.life2, self.life3)
 
-        self.lightspeedIntroText = Text(FONT, 25, 'Lightspeed Infrastructure AI Assistant', BLUE, LIGHTSPEEDBOX+130, 50)
+        #self.lightspeedIntroText = Text(FONT, 25, 'Lightspeed Infrastructure AI Assistant', BLUE, LIGHTSPEEDBOX+130, 50)
+        self.lightspeedIntroText = Text(FONT, 16, 'Lightspeed Infrastructure AI Assistant', BLUE, LIGHTSPEEDBOX+130, 50)
         # The main lightspeed text is empty for now
-        self.lightspeedContentText = MultiText(FONT, 16, '', WHITE, LIGHTSPEEDBOX, 100)
-        self.lighspeedRawText = ''
+        self.lightspeedContentText = MultiText(FONT, 12, '', WHITE, LIGHTSPEEDBOX, 100)
+        self.lightspeedRawText = ''
 
         self.asyncloop = asyncloop
         self.httpsession = requests.Session()
@@ -603,7 +610,8 @@ class SpaceInvaders(object):
             if self.should_exit(e):
                 sys.exit()
             if e.type == KEYDOWN:
-                if e.key == K_SPACE:
+                #if e.key == K_SPACE:
+                if e.key == K_x:
                     if len(self.bullets) == 0 and self.shipAlive:
                         if (not DUALBULLETMODE) or (self.score < 1000):
                             bullet = Bullet(self.player.rect.x + 23,
@@ -862,10 +870,11 @@ class SpaceInvaders(object):
 
                     self.lightspeedIntroText.draw(self.screen)
                     # The lightspeed text is updated to the global in the async task, so re-read it
-                    self.lightspeedContentText = MultiText(FONT, 16, self.lighspeedRawText, WHITE, LIGHTSPEEDBOX, 100)
+                    #self.lightspeedContentText = MultiText(FONT, 16, self.lightspeedRawText, WHITE, LIGHTSPEEDBOX, 100)
+                    self.lightspeedContentText = MultiText(FONT, 12, self.lightspeedRawText, WHITE, LIGHTSPEEDBOX, 100)
                     self.lightspeedContentText.draw(self.screen)
 
-                    # We want to check the WebSocket about every 500ms to make it seem smooth
+                    ## We want to check the WebSocket about every 500ms to make it seem smooth
                     if currentTime - self.wstimer > 1500:
                         self.wstimer = currentTime
                         # Add the WebSocket receive task to the asyncio queue

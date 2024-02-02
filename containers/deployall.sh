@@ -7,12 +7,13 @@ oc new-project project1989
 oc adm policy add-role-to-user admin system:serviceaccount:project1989:default -n target
 oc adm policy add-role-to-user admin system:serviceaccount:project1989:default
 
-( cd mock-lightspeed && oc create -f mock-lightspeed.yaml )
-( cd recovery-engine && oc create -f recovery-engine.yaml )
-( cd mock-eda && oc create -f mock-eda.yaml )
-( cd eda-engine/docker && oc create configmap eda-engine-config --from-file ./config.yaml )
-( cd eda-engine && oc create -f eda-engine.yaml )
-( cd dummy-workload && ./create-all-workloads.sh )
+#( cd mock-lightspeed && oc create -f mock-lightspeed.yaml )
+#( cd recovery-engine && oc create -f recovery-engine.yaml )
+#( cd mock-eda && oc create -f mock-eda.yaml )
+#( cd eda-engine/docker && oc create configmap eda-engine-config --from-file ./config.yaml )
+#( cd eda-engine && oc create -f eda-engine.yaml )
+#( cd dummy-workload && ./create-all-workloads.sh )
+oc create -f allin.yaml
 
 cd kubeinvaders
 
