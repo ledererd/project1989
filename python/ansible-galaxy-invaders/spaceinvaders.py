@@ -355,7 +355,7 @@ class Mystery(sprite.Sprite):
         passed = currentTime - self.timer
         if passed > self.moveTime:
             #if (self.rect.x < 0 or self.rect.x > 800) and self.playSound:
-            if (self.rect.x < 0 or self.rect.x > XRES) and self.playSound:
+            if (self.rect.x < 0 or self.rect.x > GAMEBOX-80) and self.playSound:
                 self.mysteryEntered.play()
                 self.playSound = False
             if self.rect.x < 840 and self.direction == 1:
@@ -368,7 +368,7 @@ class Mystery(sprite.Sprite):
                 game.screen.blit(self.image, self.rect)
 
         #if self.rect.x > 830:
-        if self.rect.x > GAMEBOX:
+        if self.rect.x > GAMEBOX-30:
             self.playSound = True
             self.direction = -1
             resetTimer = True
@@ -669,7 +669,7 @@ class SpaceInvaders(object):
         self.screen.blit(self.enemy1, ((GAMEBOX)-80, (YRES/2)-50))
         self.screen.blit(self.enemy2, ((GAMEBOX)-80, (YRES/2)))
         self.screen.blit(self.enemy3, ((GAMEBOX)-80, (YRES/2)+50))
-        self.screen.blit(self.enemy4, ((GAMEBOX)-99, (YRES/2)+100))
+        self.screen.blit(self.enemy4, ((GAMEBOX)-99, (YRES/2)+104))
 
     def check_collisions(self):
         sprite.groupcollide(self.bullets, self.enemyBullets, True, True)
@@ -757,11 +757,11 @@ class SpaceInvaders(object):
 
     async def checkws(self):
         #tstart = datetime.datetime.now()
-        response = self.httpsession.get(LOGURL)
+        response = self.httpsession.get(LOGURL, timeout=1)
         if (response.ok):
             jData = json.loads(response.content)
             self.lightspeedRawText = jData['data']
-            print (jData['data'])
+        #    print (jData['data'])
         #tend = datetime.datetime.now()
         #ttime = tend - tstart
         #print (ttime)
@@ -769,7 +769,7 @@ class SpaceInvaders(object):
 
     async def checkPods(self):
         #tstart = datetime.datetime.now()
-        response = self.httpsession.get(GETPODURL)
+        response = self.httpsession.get(GETPODURL, timeout=1)
         if (response.ok):
             jData = json.loads(response.content)
             #print (response.content)

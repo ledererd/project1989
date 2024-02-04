@@ -45,9 +45,12 @@ if not baseurl:
 #OCPDOMAIN = 'project1989.apps-crc.testing'
 OCPDOMAIN = baseurl
 WSURL = 'ws://eda-engine-' + OCPDOMAIN + '/ws/log'
-LOGURL = 'http://eda-engine-' + OCPDOMAIN + '/log'
-GETPODURL = 'http://kubeinvaders-' + OCPDOMAIN + '/kube/pods?action=list&namespace=target'
-KILLPODURL = 'http://kubeinvaders-' + OCPDOMAIN + '/kube/pods?action=delete&namespace=target&pod_name='
+#LOGURL = 'http://eda-engine-' + OCPDOMAIN + '/log'
+#GETPODURL = 'http://kubeinvaders-' + OCPDOMAIN + '/kube/pods?action=list&namespace=target'
+#KILLPODURL = 'http://kubeinvaders-' + OCPDOMAIN + '/kube/pods?action=delete&namespace=target&pod_name='
+LOGURL = 'http://' + OCPDOMAIN + '/eda-engine'
+GETPODURL = 'http://' + OCPDOMAIN + '/kube/pods?action=list&namespace=target'
+KILLPODURL = 'http://' + OCPDOMAIN + '/kube/pods?action=delete&namespace=target&pod_name='
 
 print ('Base URL is "', OCPDOMAIN)
 
@@ -361,7 +364,7 @@ class Mystery(sprite.Sprite):
         passed = currentTime - self.timer
         if passed > self.moveTime:
             #if (self.rect.x < 0 or self.rect.x > 800) and self.playSound:
-            if (self.rect.x < 0 or self.rect.x > XRES) and self.playSound:
+            if (self.rect.x < 0 or self.rect.x > GAMEBOX-80) and self.playSound:
                 self.mysteryEntered.play()
                 self.playSound = False
             if self.rect.x < 840 and self.direction == 1:
@@ -374,7 +377,7 @@ class Mystery(sprite.Sprite):
                 game.screen.blit(self.image, self.rect)
 
         #if self.rect.x > 830:
-        if self.rect.x > GAMEBOX:
+        if self.rect.x > GAMEBOX-30:
             self.playSound = True
             self.direction = -1
             resetTimer = True
@@ -677,7 +680,7 @@ class SpaceInvaders(object):
         self.screen.blit(self.enemy1, ((GAMEBOX)-80, (YRES/2)-50))
         self.screen.blit(self.enemy2, ((GAMEBOX)-80, (YRES/2)))
         self.screen.blit(self.enemy3, ((GAMEBOX)-80, (YRES/2)+50))
-        self.screen.blit(self.enemy4, ((GAMEBOX)-99, (YRES/2)+100))
+        self.screen.blit(self.enemy4, ((GAMEBOX)-99, (YRES/2)+104))
 
     def check_collisions(self):
         sprite.groupcollide(self.bullets, self.enemyBullets, True, True)
@@ -765,11 +768,11 @@ class SpaceInvaders(object):
 
     async def checkws(self):
         #tstart = datetime.datetime.now()
-        response = self.httpsession.get(LOGURL)
+        response = self.httpsession.get(LOGURL, timeout=1)
         if (response.ok):
             jData = json.loads(response.content)
             self.lightspeedRawText = jData['data']
-            print (jData['data'])
+        #    print (jData['data'])
         #tend = datetime.datetime.now()
         #ttime = tend - tstart
         #print (ttime)
@@ -777,7 +780,7 @@ class SpaceInvaders(object):
 
     async def checkPods(self):
         #tstart = datetime.datetime.now()
-        response = self.httpsession.get(GETPODURL)
+        response = self.httpsession.get(GETPODURL, timeout=1)
         if (response.ok):
             jData = json.loads(response.content)
             #print (response.content)
@@ -788,7 +791,11 @@ class SpaceInvaders(object):
         #print (ttime)
 
     async def killPod(self, icon):
+        #tstart = datetime.datetime.now()
         response = self.httpsession.get(KILLPODURL + icon)
+        #tend = datetime.datetime.now()
+        #ttime = tend - tstart
+        #print (ttime)
         #print ("Killing: ", icon)
     
     def cleanupKillList(self):
@@ -874,7 +881,7 @@ class SpaceInvaders(object):
                     self.lightspeedContentText = MultiText(FONT, 12, self.lightspeedRawText, WHITE, LIGHTSPEEDBOX, 100)
                     self.lightspeedContentText.draw(self.screen)
 
-                    ## We want to check the WebSocket about every 500ms to make it seem smooth
+                    # We want to check the WebSocket about every 500ms to make it seem smooth
                     if currentTime - self.wstimer > 1500:
                         self.wstimer = currentTime
                         # Add the WebSocket receive task to the asyncio queue
