@@ -1,0 +1,5 @@
+OUTPUT_FILE: /tmp/yamlstream.txt
+BASEDIR: .
+
+LIGHTSPEED_URL: http://localhost:8090/api/v0/ai/completions/
+RECOVERY_URL: http://localhost:8091/recover
