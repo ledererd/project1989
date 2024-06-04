@@ -721,15 +721,22 @@ class SpaceInvaders(object):
     def create_game_over(self, currentTime):
         self.sounds['gameover'].play()
         self.screen.blit(self.background, (0, 0))
+        self.gameOverScoreText = Text(FONT, 30, 'Score: ' +str(self.score),
+                                      GREEN, (GAMEBOX)-100, (YRES/2)+70)
+
         passed = currentTime - self.timer
         if passed < 750:
             self.gameOverText.draw(self.screen)
+            self.gameOverScoreText.draw(self.screen)
         elif 750 < passed < 1500:
             self.screen.blit(self.background, (0, 0))
+            self.gameOverScoreText.draw(self.screen)
         elif 1500 < passed < 2250:
             self.gameOverText.draw(self.screen)
+            self.gameOverScoreText.draw(self.screen)
         elif 2250 < passed < 2750:
             self.screen.blit(self.background, (0, 0))
+            self.gameOverScoreText.draw(self.screen)
         elif passed > 3000:
             self.mainScreen = True
 
