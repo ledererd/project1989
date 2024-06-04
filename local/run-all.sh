@@ -2,8 +2,9 @@
 
 #####################################################################
 # Change our working directory to the dir containing this script
-DIR=$( dirname $0 )
-cd ${DIR}
+cd $( dirname $0 )
+DIR=$( pwd )
+
 
 #####################################################################
 # Update the config file with the correct directory
